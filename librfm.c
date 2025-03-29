@@ -62,7 +62,7 @@ static void clearIrqFlags(void) {
 static void timeoutEnable(bool enable) {
     if (enable) {
         // get "Timeout" on DIO4 (default)
-        regWrite(DIO_MAP2, 0x00);
+        regWrite(DIO_MAP2, regRead(DIO_MAP2) & ~0xc0);
         // both sum up to about 100 ms
         regWrite(RX_TO_RSSI, 0x1f);
         regWrite(RX_TO_PRDY, 0x1f);
@@ -214,7 +214,7 @@ int8_t rfmGetOutputPower(void) {
 
 void rfmStartReceive(void) {
     // get "PayloadReady" on DIO0
-    regWrite(DIO_MAP1, 0x40);
+    regWrite(DIO_MAP1, (regRead(DIO_MAP1) & ~0x80) | 0x40);
 
     setMode(MODE_RX);
 }
@@ -237,7 +237,7 @@ size_t rfmReadPayload(uint8_t *payload, size_t size) {
     size_t len = regRead(FIFO);
     len = min(len, size);
 
-    // TODO assume and ignore address for now
+    // TODO assume and ignore address for now (already filtered anyway)
     regRead(FIFO);
 
     _rfmSel();
@@ -290,10 +290,11 @@ size_t rfmTransmitPayload(uint8_t *payload, size_t size, uint8_t node) {
     _rfmDes();
 
     // get "PacketSent" on DIO0 (default)
-    regWrite(DIO_MAP1, 0x00);
+    regWrite(DIO_MAP1, regRead(DIO_MAP1) & ~0xc0);
 
     setMode(MODE_TX);
 
+    // wait until "PacketSent"
     do {} while (!(irqFlags2 & (1 << 3)));
     clearIrqFlags();
 

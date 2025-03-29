@@ -69,9 +69,11 @@
 #define MODE_TX     0x0c
 #define MODE_RX     0x10
 
-#define PA_OFF      18
+#define DBM_MIN     -2
+#define DBM_MAX     13
 #define PA_MIN      16
 #define PA_MAX      31
+#define PA_OFF      18
 
 #define MESSAGE_SIZE    63
 #define F_STEP          6103515625ULL
