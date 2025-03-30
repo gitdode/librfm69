@@ -9,10 +9,6 @@ This is work in progress. Simple Tx-Rx with response works so far.
 I'm impressed how well these radio modules work; the range achieved with 
 simple wire antennas as well as the reliable packet transmission.  
 
-## TODO
-
-- Add support for RFM9x (LoRa)
-
 ## Usage
 
 1. Include `librfm.h` and `librfm.a` in the project
