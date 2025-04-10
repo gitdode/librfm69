@@ -64,7 +64,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm: ${OBJECTFILES}
 
 ${OBJECTDIR}/_ext/5ac08470/librfm.o: /home/dode/dev/librfm/librfm.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/5ac08470
-	$(COMPILE.c) -g -o ${OBJECTDIR}/_ext/5ac08470/librfm.o /home/dode/dev/librfm/librfm.c
+	$(COMPILE.c) -g -std=c99 -o ${OBJECTDIR}/_ext/5ac08470/librfm.o /home/dode/dev/librfm/librfm.c
 
 # Subprojects
 .build-subprojects:

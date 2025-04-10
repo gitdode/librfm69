@@ -1,4 +1,4 @@
-# librfm
+# librfm69
 
 ## About
 
@@ -11,8 +11,8 @@ simple wire antennas as well as the reliable packet transmission.
 
 ## Usage
 
-1. Include `librfm.h` and `librfm.a` in the project
-2. Implement the `_rfm*` functions in `librfm.h` in the application
+1. Include `librfm69.h` and `librfm69.a` in the project
+2. Implement the `_rfm*` functions in `librfm69.h` in the application
 (this is to make the library device and CPU frequency independent)
 3. Route interrupts occurring on `DIO0` and `DIO4` to `rfmIrq()`
 

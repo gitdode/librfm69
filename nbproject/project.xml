@@ -3,14 +3,14 @@
     <type>org.netbeans.modules.cnd.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>librfm</name>
+            <name>librfm69</name>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>/home/dode/dev/librfm</sourceRootElem>
+                <sourceRootElem>/home/dode/dev/librfm69</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
