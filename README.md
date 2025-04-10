@@ -4,10 +4,14 @@
 
 Static avr-libc library providing basic support for RFM69 radio modules.  
 
-This is work in progress. Simple Tx-Rx with response works so far.  
-
 I'm impressed how well these radio modules work; the range achieved with 
 simple wire antennas as well as the reliable packet transmission.  
+
+This is work in progress. Currently available is:
+
+- Transmit a packet
+- Blocking receive a single packet with timeout
+- Async'ly receive a packet (MCU sleeps or does something else until reception)  
 
 ## Usage
 
