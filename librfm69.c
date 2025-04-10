@@ -53,10 +53,10 @@ static void setMode(uint8_t mode) {
  * @param enable
  */
 static void timeoutEnable(bool enable) {
+    // get "Timeout" on DIO4 (default)
+    regWrite(DIO_MAP2, regRead(DIO_MAP2) & ~0xc0);
+    timeout = false;
     if (enable) {
-        // get "Timeout" on DIO4 (default)
-        regWrite(DIO_MAP2, regRead(DIO_MAP2) & ~0xc0);
-        timeout = false;
         // TODO calculate - seems to be about 50, 75ms
         regWrite(RX_TO_RSSI, 0x1f);
         regWrite(RX_TO_PRDY, 0x2f);

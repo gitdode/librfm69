@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=librfm
+PROJECTNAME=librfm69
 
 # Active Configuration
 DEFAULTCONF=Custom
