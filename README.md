@@ -40,7 +40,7 @@ Increasing frequency deviation to 10 kHz and receiver bandwidth to 20.8 kHz,
 temperature susceptibility is eliminated; when testing with transmitter 
 temperature from -20°C to 50°C, packet transmission is perfectly reliable.
 
-Frequency Deviation = 10 kHz (transmitter)  
+Frequency Deviation = 10.4 kHz (transmitter)  
 `RegFdevMsb` = `0x00`  
 `RegFdevLsb` = `0xa4`  
 
