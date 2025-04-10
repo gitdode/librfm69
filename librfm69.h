@@ -1,5 +1,5 @@
 /* 
- * File:   librfm.h
+ * File:   librfm69.h
  * Author: torsten.roemer@luniks.net
  *
  * Created on 23. März 2025, 23:04

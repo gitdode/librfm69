@@ -1,11 +1,11 @@
 /*
- * File:   librfm.c
+ * File:   librfm69.c
  * Author: torsten.roemer@luniks.net
  *
  * Created on 28. Januar 2025, 19:57
  */
 
-#include "librfm.h"
+#include "librfm69.h"
 #include "utils.h"
 
 static volatile uint8_t irqFlags1 = 0;
