@@ -12,72 +12,71 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define FIFO        0x00
-#define OP_MODE     0x01
-#define DATA_MOD    0x02
-#define BITRATE_MSB 0x03
-#define BITRATE_LSB 0x04
-#define FDEV_MSB    0x05
-#define FDEV_LSB    0x06
-#define FRF_MSB     0x07
-#define FRF_MID     0x08
-#define FRF_LSB     0x09
-#define OSC1        0x0a
-#define PA_LEVEL    0x11
-#define LNA         0x18
-#define RX_BW       0x19
-#define AFC_FEI     0x1e
-#define AFC_BW      0x20
-#define RSSI_CONFIG 0x23
-#define RSSI_VALUE  0x24
-#define DIO_MAP1    0x25
-#define DIO_MAP2    0x26
-#define IRQ_FLAGS1  0x27
-#define RSSI_THRESH 0x29
-#define RX_TO_RSSI  0x2a
-#define RX_TO_PRDY  0x2b
-#define PREAMB_MSB  0x2c
-#define PREAMB_LSB  0x2d
-#define IRQ_FLAGS2  0x28
-#define SYNC_CONF   0x2e
-#define SYNC_VAL1   0x2f
-#define SYNC_VAL2   0x30
-#define SYNC_VAL3   0x31
-#define SYNC_VAL4   0x32
-#define SYNC_VAL5   0x33
-#define SYNC_VAL6   0x34
-#define SYNC_VAL7   0x35
-#define SYNC_VAL8   0x36
-#define PCK_CFG1    0x37
-#define PAYLOAD_LEN 0x38
-#define NODE_ADDR   0x39
-#define CAST_ADDR   0x3a
-#define AUTO_MODES  0x3b
-#define FIFO_THRESH 0x3c
-#define PCK_CFG2    0x3d
-#define TEST_LNA    0x58
-#define TEST_PA1    0x5a
-#define TEST_PA2    0x5c
-#define TEST_DAGC   0x6f
-#define TEST_AFC    0x71
+#define RFM_FIFO        0x00
+#define RFM_OP_MODE     0x01
+#define RFM_DATA_MOD    0x02
+#define RFM_BITRATE_MSB 0x03
+#define RFM_BITRATE_LSB 0x04
+#define RFM_FDEV_MSB    0x05
+#define RFM_FDEV_LSB    0x06
+#define RFM_FRF_MSB     0x07
+#define RFM_FRF_MID     0x08
+#define RFM_FRF_LSB     0x09
+#define RFM_OSC1        0x0a
+#define RFM_PA_LEVEL    0x11
+#define RFM_LNA         0x18
+#define RFM_RX_BW       0x19
+#define RFM_AFC_FEI     0x1e
+#define RFM_AFC_BW      0x20
+#define RFM_RSSI_CONFIG 0x23
+#define RFM_RSSI_VALUE  0x24
+#define RFM_DIO_MAP1    0x25
+#define RFM_DIO_MAP2    0x26
+#define RFM_IRQ_FLAGS1  0x27
+#define RFM_RSSI_THRESH 0x29
+#define RFM_RX_TO_RSSI  0x2a
+#define RFM_RX_TO_PRDY  0x2b
+#define RFM_PREAMB_MSB  0x2c
+#define RFM_PREAMB_LSB  0x2d
+#define RFM_IRQ_FLAGS2  0x28
+#define RFM_SYNC_CONF   0x2e
+#define RFM_SYNC_VAL1   0x2f
+#define RFM_SYNC_VAL2   0x30
+#define RFM_SYNC_VAL3   0x31
+#define RFM_SYNC_VAL4   0x32
+#define RFM_SYNC_VAL5   0x33
+#define RFM_SYNC_VAL6   0x34
+#define RFM_SYNC_VAL7   0x35
+#define RFM_SYNC_VAL8   0x36
+#define RFM_PCK_CFG1    0x37
+#define RFM_PAYLOAD_LEN 0x38
+#define RFM_NODE_ADDR   0x39
+#define RFM_CAST_ADDR   0x3a
+#define RFM_AUTO_MODES  0x3b
+#define RFM_FIFO_THRESH 0x3c
+#define RFM_PCK_CFG2    0x3d
+#define RFM_TEST_LNA    0x58
+#define RFM_TEST_PA1    0x5a
+#define RFM_TEST_PA2    0x5c
+#define RFM_TEST_DAGC   0x6f
+#define RFM_TEST_AFC    0x71
 
-#define MASK_MODE   0x1c
+#define RFM_MODE_SLEEP  0x00
+#define RFM_MODE_STDBY  0x04
+#define RFM_MODE_FS     0x08
+#define RFM_MODE_TX     0x0c
+#define RFM_MODE_RX     0x10
+#define RFM_MASK_MODE   0x1c
 
-#define MODE_SLEEP  0x00
-#define MODE_STDBY  0x04
-#define MODE_FS     0x08
-#define MODE_TX     0x0c
-#define MODE_RX     0x10
+#define RFM_F_STEP      61035
 
-#define DBM_MIN     -2
-#define DBM_MAX     13
-#define PA_MIN      16
-#define PA_MAX      31
-#define PA_OFF      18
+#define RFM_DBM_MIN     -2
+#define RFM_DBM_MAX     13
+#define RFM_PA_MIN      16
+#define RFM_PA_MAX      31
+#define RFM_PA_OFF      18
 
-#define MESSAGE_SIZE    63
-#define F_STEP          6103515625ULL
-#define CAST_ADDRESS    0x84
+#define RFM_MSG_SIZE    63
 
 /**
  * Flags for "payload ready" event.
@@ -124,11 +123,11 @@ uint8_t _rfmTx(uint8_t data);
 
 /**
  * Initializes the radio module with the given carrier frequency in kilohertz
- * and node address. Returns true on success, false otherwise.
+ * and node and broadcast address. Returns true on success, false otherwise.
  * 
  * @return success
  */
-bool rfmInit(uint64_t freq, uint8_t node);
+bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast);
 
 /**
  * Reads interrupt flags. Should be called when any interrupt occurs 

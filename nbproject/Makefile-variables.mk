@@ -9,11 +9,11 @@ CND_DISTDIR=dist
 # Custom configuration
 CND_PLATFORM_Custom=AVR-Linux
 CND_ARTIFACT_DIR_Custom=dist/Custom/AVR-Linux
-CND_ARTIFACT_NAME_Custom=librfm
-CND_ARTIFACT_PATH_Custom=dist/Custom/AVR-Linux/librfm
+CND_ARTIFACT_NAME_Custom=librfm69
+CND_ARTIFACT_PATH_Custom=dist/Custom/AVR-Linux/librfm69
 CND_PACKAGE_DIR_Custom=dist/Custom/AVR-Linux/package
-CND_PACKAGE_NAME_Custom=librfm.tar
-CND_PACKAGE_PATH_Custom=dist/Custom/AVR-Linux/package/librfm.tar
+CND_PACKAGE_NAME_Custom=librfm69.tar
+CND_PACKAGE_PATH_Custom=dist/Custom/AVR-Linux/package/librfm69.tar
 #
 # include compiler specific variables
 #
