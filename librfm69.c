@@ -44,7 +44,7 @@ static uint8_t regRead(uint8_t reg) {
  * Sets the module to the given operating mode.
  */
 static void setMode(uint8_t mode) {
-    regWrite(OP_MODE, (regRead(OP_MODE) & ~MASK_MODE) | (mode & MASK_MODE));
+    regWrite(RFM_OP_MODE, (regRead(RFM_OP_MODE) & ~RFM_MASK_MODE) | (mode & RFM_MASK_MODE));
 }
 
 /**
@@ -61,12 +61,12 @@ static void timeoutEnable(bool enable) {
         regWrite(RX_TO_RSSI, 0x1f);
         regWrite(RX_TO_PRDY, 0x2f);
     } else {
-        regWrite(RX_TO_RSSI, 0x00);
-        regWrite(RX_TO_PRDY, 0x00);
+        regWrite(RFM_RX_TO_RSSI, 0x00);
+        regWrite(RFM_RX_TO_PRDY, 0x00);
     }
 }
 
-bool rfmInit(uint64_t freq, uint8_t node) {
+bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     // wait a bit after power on
     _rfmDelay5();
     _rfmDelay5();
@@ -84,7 +84,7 @@ bool rfmInit(uint64_t freq, uint8_t node) {
     }
 
     // packet mode, FSK modulation, no shaping (default)
-    regWrite(DATA_MOD, 0x00);
+    regWrite(RFM_DATA_MOD, 0x00);
 
     // bit rate 9.6 kBit/s
     // regWrite(BITRATE_MSB, 0x0d);
@@ -93,8 +93,8 @@ bool rfmInit(uint64_t freq, uint8_t node) {
     // frequency deviation (default 5 kHz) - increasing to 10 kHz
     // completely removes susceptibility to temperature changes
     // RX_BW must be increased accordingly
-    regWrite(FDEV_MSB, 0x00);
-    regWrite(FDEV_LSB, 0xa4);
+    regWrite(RFM_FDEV_MSB, 0x00);
+    regWrite(RFM_FDEV_LSB, 0xa4);
 
     // RC calibration, automatically done at device power-up
     // regWrite(OSC1, 0x80);
@@ -103,12 +103,12 @@ bool rfmInit(uint64_t freq, uint8_t node) {
     // PA level (default +13 dBm with PA0, yields very weak output power, why?)
     // regWrite(PA_LEVEL, 0x9f);
     // +13 dBm on PA1, yields the expected output power
-    regWrite(PA_LEVEL, 0x5f);
+    regWrite(RFM_PA_LEVEL, 0x5f);
     // +17 dBm - doesn't seem to work just like that?
     // regWrite(PA_LEVEL, 0x7f);
 
     // LNA 200 Ohm, gain AGC (default)
-    regWrite(LNA, 0x88);
+    regWrite(RFM_LNA, 0x88);
     // LNA 50 Ohm, gain AGC
     // regWrite(LNA, 0x08);
 
@@ -118,63 +118,63 @@ bool rfmInit(uint64_t freq, uint8_t node) {
     // freq of DC offset canceller and channel filter bandwith (default 10.4 kHz)
     // increasing to 20.8 kHz in connection with setting FDEV_*SB to 10 kHz
     // completely removes susceptibility to temperature changes
-    regWrite(RX_BW, 0x54);
+    regWrite(RFM_RX_BW, 0x54);
 
     // RX_BW during AFC (default 0x8b)
-    regWrite(AFC_BW, 0x54);
+    regWrite(RFM_AFC_BW, 0x54);
 
     // AFC auto on
     // regWrite(AFC_FEI, 0x04);
 
     // RSSI threshold (default, POR 0xff)
-    regWrite(RSSI_THRESH, 0xe4);
+    regWrite(RFM_RSSI_THRESH, 0xe4);
 
     // Preamble size
-    regWrite(PREAMB_MSB, 0x00);
-    regWrite(PREAMB_LSB, 0x03);
+    regWrite(RFM_PREAMB_MSB, 0x00);
+    regWrite(RFM_PREAMB_LSB, 0x03);
 
     // turn off CLKOUT (not used)
-    regWrite(DIO_MAP2, 0x07);
+    regWrite(RFM_DIO_MAP2, 0x07);
 
     // set the carrier frequency
-    uint32_t frf = freq * 1000000ULL / F_STEP;
-    regWrite(FRF_MSB, frf >> 16);
-    regWrite(FRF_MID, frf >> 8);
-    regWrite(FRF_LSB, frf >> 0);
+    uint32_t frf = freq * 1000000UL / RFM_F_STEP;
+    regWrite(RFM_FRF_MSB, frf >> 16);
+    regWrite(RFM_FRF_MID, frf >> 8);
+    regWrite(RFM_FRF_LSB, frf >> 0);
 
     // enable sync word generation and detection, FIFO fill on sync address,
     // 4 bytes sync word, tolerate 3 bit errors
-    regWrite(SYNC_CONF, 0x9b);
+    regWrite(RFM_SYNC_CONF, 0x9b);
 
     // just set all sync word values to some really creative value
-    regWrite(SYNC_VAL1, 0x2f);
-    regWrite(SYNC_VAL2, 0x30);
-    regWrite(SYNC_VAL3, 0x31);
-    regWrite(SYNC_VAL4, 0x32);
-    regWrite(SYNC_VAL5, 0x33);
-    regWrite(SYNC_VAL6, 0x34);
-    regWrite(SYNC_VAL7, 0x35);
-    regWrite(SYNC_VAL8, 0x36);
+    regWrite(RFM_SYNC_VAL1, 0x2f);
+    regWrite(RFM_SYNC_VAL2, 0x30);
+    regWrite(RFM_SYNC_VAL3, 0x31);
+    regWrite(RFM_SYNC_VAL4, 0x32);
+    regWrite(RFM_SYNC_VAL5, 0x33);
+    regWrite(RFM_SYNC_VAL6, 0x34);
+    regWrite(RFM_SYNC_VAL7, 0x35);
+    regWrite(RFM_SYNC_VAL8, 0x36);
 
     // variable payload length, crc on, no address matching
     // regWrite(PCK_CFG1, 0x90);
     // match broadcast or node address
     // regWrite(PCK_CFG1, 0x94);
     // + CrcAutoClearOff
-    regWrite(PCK_CFG1, 0x9c);
+    regWrite(RFM_PCK_CFG1, 0x9c);
 
     // disable automatic RX restart
-    regWrite(PCK_CFG2, 0x00);
+    regWrite(RFM_PCK_CFG2, 0x00);
 
     // node and broadcast address
-    regWrite(NODE_ADDR, node);
-    regWrite(CAST_ADDR, CAST_ADDRESS);
+    regWrite(RFM_NODE_ADDR, node);
+    regWrite(RFM_CAST_ADDR, cast);
 
     // set TX start condition to "at least one byte in FIFO"
-    regWrite(FIFO_THRESH, 0x8f);
+    regWrite(RFM_FIFO_THRESH, 0x8f);
 
     // Fading Margin Improvement, improved margin, use if AfcLowBetaOn=0
-    regWrite(TEST_DAGC, 0x30);
+    regWrite(RFM_TEST_DAGC, 0x30);
 
     // printString("Radio init done\r\n");
 
@@ -200,24 +200,24 @@ void rfmSleep(void) {
 }
 
 void rfmWake(void) {
-    setMode(MODE_STDBY);
+    setMode(RFM_MODE_STDBY);
     // should better wait for ModeReady irq?
     _rfmDelay5();
 }
 
 void rfmSetNodeAddress(uint8_t address) {
-    regWrite(NODE_ADDR, address);
+    regWrite(RFM_NODE_ADDR, address);
 }
 
 void rfmSetOutputPower(int8_t dBm) {
     uint8_t pa = 0x40; // -18 dBm with PA1
     // adjust power from -2 to +13 dBm
-    pa |= (min(max(dBm + PA_OFF, PA_MIN), PA_MAX)) & 0x1f;
-    regWrite(PA_LEVEL, pa);
+    pa |= (min(max(dBm + RFM_PA_OFF, RFM_PA_MIN), RFM_PA_MAX)) & 0x1f;
+    regWrite(RFM_PA_LEVEL, pa);
 }
 
 int8_t rfmGetOutputPower(void) {
-    return (regRead(PA_LEVEL) & 0x1f) - PA_OFF;
+    return (regRead(RFM_PA_LEVEL) & 0x1f) - RFM_PA_OFF;
 }
 
 void rfmStartReceive(bool timeout) {
@@ -227,32 +227,32 @@ void rfmStartReceive(bool timeout) {
     regWrite(DIO_MAP1, (regRead(DIO_MAP1) & ~0x80) | 0x40);
     payloadReady = false;
 
-    setMode(MODE_RX);
+    setMode(RFM_MODE_RX);
 }
 
 PayloadFlags rfmPayloadReady(void) {
     PayloadFlags flags = {.ready = false, .rssi = 255, .crc = false};
     if (payloadReady) {
         flags.ready = true;
-        flags.rssi = regRead(RSSI_VALUE);
-        flags.crc = regRead(IRQ_FLAGS2) & (1 << 1);
-        setMode(MODE_STDBY);
+        flags.rssi = regRead(RFM_RSSI_VALUE);
+        flags.crc = regRead(RFM_IRQ_FLAGS2) & (1 << 1);
+        setMode(RFM_MODE_STDBY);
     }
 
     return flags;
 }
 
 size_t rfmReadPayload(uint8_t *payload, size_t size) {
-    size_t len = regRead(FIFO);
+    size_t len = regRead(RFM_FIFO);
     len = min(len, size);
 
     // TODO assume and ignore address for now (already filtered anyway)
-    regRead(FIFO);
+    regRead(RFM_FIFO);
 
     _rfmSel();
-    _rfmTx(FIFO);
+    _rfmTx(RFM_FIFO);
     for (size_t i = 0; i < len; i++) {
-        payload[i] = _rfmTx(FIFO);
+        payload[i] = _rfmTx(RFM_FIFO);
     }
     _rfmDes();
 
@@ -269,11 +269,11 @@ size_t rfmReceivePayload(uint8_t *payload, size_t size, bool enable) {
         timeoutEnable(false);
     }
 
-    setMode(MODE_STDBY);
+    setMode(RFM_MODE_STDBY);
 
     if (timeout) {
         // full power as last resort, indicate timeout
-        regWrite(PA_LEVEL, 0x5f);
+        regWrite(RFM_PA_LEVEL, 0x5f);
 
         return 0;
     }
@@ -283,10 +283,10 @@ size_t rfmReceivePayload(uint8_t *payload, size_t size, bool enable) {
 
 size_t rfmTransmitPayload(uint8_t *payload, size_t size, uint8_t node) {
     // message + address byte
-    size_t len = min(size, MESSAGE_SIZE) + 1;
+    size_t len = min(size, RFM_MSG_SIZE) + 1;
 
     _rfmSel();
-    _rfmTx(FIFO | 0x80);
+    _rfmTx(RFM_FIFO | 0x80);
     _rfmTx(len);
     _rfmTx(node);
     for (size_t i = 0; i < size; i++) {
@@ -298,12 +298,12 @@ size_t rfmTransmitPayload(uint8_t *payload, size_t size, uint8_t node) {
     regWrite(DIO_MAP1, regRead(DIO_MAP1) & ~0xc0);
     packetSent = false;
 
-    setMode(MODE_TX);
+    setMode(RFM_MODE_TX);
 
     // wait until "PacketSent"
     do {} while (!packetSent);
 
-    setMode(MODE_STDBY);
+    setMode(RFM_MODE_STDBY);
 
     return len;
 }
