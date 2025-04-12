@@ -96,15 +96,9 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     regWrite(RFM_FDEV_MSB, 0x00);
     regWrite(RFM_FDEV_LSB, 0xa4);
 
-    // RC calibration, automatically done at device power-up
-    // regWrite(OSC1, 0x80);
-    // do { } while (!(regRead(OSC1) & 0x40));
-
-    // PA level (default +13 dBm with PA0, yields very weak output power, why?)
-    // regWrite(PA_LEVEL, 0x9f);
-    // +13 dBm on PA1, yields the expected output power
+    // +13 dBm on PA1
     regWrite(RFM_PA_LEVEL, 0x5f);
-    // +17 dBm - doesn't seem to work just like that?
+    // TODO +17 dBm
     // regWrite(PA_LEVEL, 0x7f);
 
     // LNA 200 Ohm, gain AGC (default)
@@ -156,11 +150,8 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     regWrite(RFM_SYNC_VAL7, 0x35);
     regWrite(RFM_SYNC_VAL8, 0x36);
 
-    // variable payload length, crc on, no address matching
-    // regWrite(PCK_CFG1, 0x90);
-    // match broadcast or node address
-    // regWrite(PCK_CFG1, 0x94);
-    // + CrcAutoClearOff
+    // variable payload length, crc on, match broadcast or node address,
+    // CrcAutoClearOff
     regWrite(RFM_PCK_CFG1, 0x9c);
 
     // disable automatic RX restart
