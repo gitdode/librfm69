@@ -73,7 +73,6 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
 
     // pull reset LOW to turn on the module
     _rfmOn();
-
     _rfmDelay5();
 
     uint8_t version = regRead(0x10);
@@ -82,6 +81,9 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     if (version == 0x00) {
         return false;
     }
+
+    // make sure radio is in standby mode
+    setMode(RFM_MODE_STDBY);
 
     // packet mode, FSK modulation, no shaping (default)
     regWrite(RFM_DATA_MOD, 0x00);
