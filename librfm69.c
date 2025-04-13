@@ -259,13 +259,15 @@ size_t rfmReceivePayload(uint8_t *payload, size_t size, bool enable) {
     // wait until "PayloadReady" or (forced) "Timeout"
     do {} while (!payloadReady && !timeout);
 
-    timeoutEnable(false);
-
     setMode(RFM_MODE_STDBY);
 
     if (timeout) {
+        timeoutEnable(false);
+
         return 0;
     }
+
+    timeoutEnable(false);
 
     return rfmReadPayload(payload, size);
 }
