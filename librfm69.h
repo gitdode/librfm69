@@ -5,8 +5,8 @@
  * Created on 23. März 2025, 23:04
  */
 
-#ifndef LIBRFM_H
-#define LIBRFM_H
+#ifndef LIBRFM69_H
+#define LIBRFM69_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -221,5 +221,5 @@ size_t rfmReceivePayload(uint8_t *payload, size_t size, bool timeout);
  */
 size_t rfmTransmitPayload(uint8_t *payload, size_t size, uint8_t node);
 
-#endif /* LIBRFM_H */
+#endif /* LIBRFM69_H */
 
