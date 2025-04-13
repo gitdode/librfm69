@@ -74,7 +74,7 @@
 #define RFM_DBM_MAX     13
 #define RFM_PA_MIN      16
 #define RFM_PA_MAX      31
-#define RFM_PA_OFF      18
+#define RFM_PA_OFF      14
 
 #define RFM_MSG_SIZE    63
 

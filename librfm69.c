@@ -54,12 +54,12 @@ static void setMode(uint8_t mode) {
  */
 static void timeoutEnable(bool enable) {
     // get "Timeout" on DIO4 (default)
-    regWrite(DIO_MAP2, regRead(DIO_MAP2) & ~0xc0);
+    regWrite(RFM_DIO_MAP2, regRead(RFM_DIO_MAP2) & ~0xc0);
     timeout = false;
     if (enable) {
         // TODO calculate - seems to be about 50, 75ms
-        regWrite(RX_TO_RSSI, 0x1f);
-        regWrite(RX_TO_PRDY, 0x2f);
+        regWrite(RFM_RX_TO_RSSI, 0x1f);
+        regWrite(RFM_RX_TO_PRDY, 0x2f);
     } else {
         regWrite(RFM_RX_TO_RSSI, 0x00);
         regWrite(RFM_RX_TO_PRDY, 0x00);
@@ -96,10 +96,10 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     regWrite(RFM_FDEV_MSB, 0x00);
     regWrite(RFM_FDEV_LSB, 0xa4);
 
-    // +13 dBm on PA1
-    regWrite(RFM_PA_LEVEL, 0x5f);
-    // TODO +17 dBm
-    // regWrite(PA_LEVEL, 0x7f);
+    // +13 dBm with PA1
+    // regWrite(RFM_PA_LEVEL, 0x5f);
+    // +17 dBm with PA1 and PA2
+    regWrite(RFM_PA_LEVEL, 0x7f);
 
     // LNA 200 Ohm, gain AGC (default)
     regWrite(RFM_LNA, 0x88);
@@ -173,8 +173,8 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
 }
 
 void rfmIrq(void) {
-    uint8_t irqFlags1 = regRead(IRQ_FLAGS1);
-    uint8_t irqFlags2 = regRead(IRQ_FLAGS2);
+    uint8_t irqFlags1 = regRead(RFM_IRQ_FLAGS1);
+    uint8_t irqFlags2 = regRead(RFM_IRQ_FLAGS2);
 
     if (irqFlags1 & (1 << 2)) timeout = true;
     if (irqFlags2 & (1 << 3)) packetSent = true;
@@ -182,12 +182,13 @@ void rfmIrq(void) {
 }
 
 void rfmTimeout(void) {
-    timeout = true;
+    // only used for RFM95 in FSK mode
+    // timeout = true;
 }
 
 void rfmSleep(void) {
     _rfmDelay5();
-    setMode(MODE_SLEEP);
+    setMode(RFM_MODE_SLEEP);
 }
 
 void rfmWake(void) {
@@ -201,8 +202,8 @@ void rfmSetNodeAddress(uint8_t address) {
 }
 
 void rfmSetOutputPower(int8_t dBm) {
-    uint8_t pa = 0x40; // -18 dBm with PA1
-    // adjust power from -2 to +13 dBm
+    uint8_t pa = 0x60; // -14 dBm with PA1 + PA2
+    // adjust power from +2 to +17 dBm
     pa |= (min(max(dBm + RFM_PA_OFF, RFM_PA_MIN), RFM_PA_MAX)) & 0x1f;
     regWrite(RFM_PA_LEVEL, pa);
 }
@@ -215,7 +216,7 @@ void rfmStartReceive(bool timeout) {
     timeoutEnable(timeout);
 
     // get "PayloadReady" on DIO0
-    regWrite(DIO_MAP1, (regRead(DIO_MAP1) & ~0x80) | 0x40);
+    regWrite(RFM_DIO_MAP1, (regRead(RFM_DIO_MAP1) & ~0x80) | 0x40);
     payloadReady = false;
 
     setMode(RFM_MODE_RX);
@@ -225,7 +226,7 @@ PayloadFlags rfmPayloadReady(void) {
     PayloadFlags flags = {.ready = false, .rssi = 255, .crc = false};
     if (payloadReady) {
         flags.ready = true;
-        flags.rssi = regRead(RFM_RSSI_VALUE);
+        flags.rssi = divRoundNearest(regRead(RFM_RSSI_VALUE), 2);
         flags.crc = regRead(RFM_IRQ_FLAGS2) & (1 << 1);
         setMode(RFM_MODE_STDBY);
     }
@@ -263,9 +264,6 @@ size_t rfmReceivePayload(uint8_t *payload, size_t size, bool enable) {
     setMode(RFM_MODE_STDBY);
 
     if (timeout) {
-        // full power as last resort, indicate timeout
-        regWrite(RFM_PA_LEVEL, 0x5f);
-
         return 0;
     }
 
@@ -286,7 +284,7 @@ size_t rfmTransmitPayload(uint8_t *payload, size_t size, uint8_t node) {
     _rfmDes();
 
     // get "PacketSent" on DIO0 (default)
-    regWrite(DIO_MAP1, regRead(DIO_MAP1) & ~0xc0);
+    regWrite(RFM_DIO_MAP1, regRead(RFM_DIO_MAP1) & ~0xc0);
     packetSent = false;
 
     setMode(RFM_MODE_TX);
