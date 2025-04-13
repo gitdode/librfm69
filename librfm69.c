@@ -82,8 +82,8 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
         return false;
     }
 
-    // make sure radio is in standby mode
-    setMode(RFM_MODE_STDBY);
+    // make sure radio is in sleep mode
+    setMode(RFM_MODE_SLEEP);
 
     // packet mode, FSK modulation, no shaping (default)
     regWrite(RFM_DATA_MOD, 0x00);
