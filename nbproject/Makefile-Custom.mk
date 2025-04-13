@@ -28,14 +28,14 @@ CND_DISTDIR=dist
 CND_BUILDDIR=build
 
 # Include project Makefile
-include /home/dode/dev/librfm/Makefile
+include /home/dode/dev/librfm69/Makefile
 
 # Object Directory
 OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/5ac08470/librfm.o
+	${OBJECTDIR}/_ext/acb12f33/librfm69.o
 
 
 # C Compiler Flags
@@ -56,15 +56,15 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm69
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm69: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/librfm69 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/5ac08470/librfm.o: /home/dode/dev/librfm/librfm.c
-	${MKDIR} -p ${OBJECTDIR}/_ext/5ac08470
-	$(COMPILE.c) -g -std=c99 -o ${OBJECTDIR}/_ext/5ac08470/librfm.o /home/dode/dev/librfm/librfm.c
+${OBJECTDIR}/_ext/acb12f33/librfm69.o: /home/dode/dev/librfm69/librfm69.c
+	${MKDIR} -p ${OBJECTDIR}/_ext/acb12f33
+	$(COMPILE.c) -g -std=c99 -o ${OBJECTDIR}/_ext/acb12f33/librfm69.o /home/dode/dev/librfm69/librfm69.c
 
 # Subprojects
 .build-subprojects:
