@@ -122,9 +122,12 @@ void _rfmDes(void);
 uint8_t _rfmTx(uint8_t data);
 
 /**
- * Initializes the radio module with the given carrier frequency in kilohertz
- * and node and broadcast address. Returns true on success, false otherwise.
+ * Initializes the radio module with the given carrier frequency in kilohertz 
+ * and node and brodcast address. Returns true on success, false otherwise.
  * 
+ * @param freq carrier frequency
+ * @param node address
+ * @param broadcast address
  * @return success
  */
 bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast);
@@ -138,6 +141,7 @@ void rfmIrq(void);
 /**
  * Sets the "Timeout" interrupt flag, allowing to "unlock" a possibly hanging 
  * wait for either "PayloadReady" or "Timeout" by the radio.
+ * Only used for RFM95 in FSK mode, can be a no-op here.
  */
 void rfmTimeout(void);
 
