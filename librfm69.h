@@ -90,8 +90,6 @@ typedef struct {
 /**
  * F_CPU dependent delay of 5 milliseconds.
  * _delay_ms(5);
- * 
- * @param ms
  */
 void _rfmDelay5(void);
 
@@ -163,7 +161,7 @@ void rfmWake(void);
 void rfmSetNodeAddress(uint8_t address);
 
 /**
- * Sets the output power to -2 to +13 dBm. 
+ * Sets the output power to +2 to +17 dBm. 
  * Values outside that range are ignored.
  * 
  * @param dBm ouput power
@@ -186,10 +184,10 @@ int8_t rfmGetOutputPower(void);
 void rfmStartReceive(bool timeout);
 
 /**
- * Returns true if a "PayloadReady" interrupt arrived and clears the
- * interrupt state.
+ * Returns true and puts the radio in standby mode if a "PayloadReady" 
+ * interrupt arrived.
  * 
- * @return true if "PayloadReady"
+ * @return flags
  */
 PayloadFlags rfmPayloadReady(void);
 
@@ -216,7 +214,7 @@ size_t rfmReadPayload(uint8_t *payload, size_t size);
 size_t rfmReceivePayload(uint8_t *payload, size_t size, bool timeout);
 
 /**
- * Transmits up to 64 bytes of the given payload with the given node address.
+ * Transmits up to 63 bytes of the given payload with the given node address.
  * 
  * @param payload to be sent
  * @param size of payload
