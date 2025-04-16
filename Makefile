@@ -3,6 +3,7 @@
 # Simplified version from: https://github.com/hexagon5un/AVR-Programming
 
 MAIN = librfm69.c
+SRC =
 
 CC = avr-gcc
 AR = avr-ar
@@ -18,6 +19,8 @@ CFLAGS += -std=gnu99
 CFLAGS += -c
 
 ARFLAGS = rcs
+
+MAKEFLAGS += -r
 
 TARGET = $(strip $(basename $(MAIN)))
 SRC += $(TARGET).c
