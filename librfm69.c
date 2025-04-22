@@ -273,14 +273,13 @@ size_t rfmReceivePayload(uint8_t *payload, size_t size, bool enable) {
 }
 
 size_t rfmTransmitPayload(uint8_t *payload, size_t size, uint8_t node) {
-    // message + address byte
-    size_t len = min(size, RFM_MSG_SIZE) + 1;
+    size_t len = min(size, RFM_MSG_SIZE);
 
     _rfmSel();
     _rfmTx(RFM_FIFO | 0x80);
-    _rfmTx(len);
+    _rfmTx(len + 1); // +1 for node address
     _rfmTx(node);
-    for (size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i < len; i++) {
         _rfmTx(payload[i]);
     }
     _rfmDes();
