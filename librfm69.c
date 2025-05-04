@@ -116,8 +116,8 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     // completely removes susceptibility to temperature changes
     regWrite(RFM_RX_BW, 0x54);
 
-    // RX_BW during AFC (default 0x8b)
-    regWrite(RFM_AFC_BW, 0x54);
+    // RX_BW during AFC 41.7 kHz (AFC not used)
+    regWrite(RFM_AFC_BW, 0x83);
 
     // AFC auto on
     // regWrite(AFC_FEI, 0x04);
@@ -125,9 +125,9 @@ bool rfmInit(uint64_t freq, uint8_t node, uint8_t cast) {
     // RSSI threshold (default, POR 0xff)
     regWrite(RFM_RSSI_THRESH, 0xe4);
 
-    // Preamble size
+    // Preamble size 5 bytes
     regWrite(RFM_PREAMB_MSB, 0x00);
-    regWrite(RFM_PREAMB_LSB, 0x03);
+    regWrite(RFM_PREAMB_LSB, 0x05);
 
     // turn off CLKOUT (not used)
     regWrite(RFM_DIO_MAP2, 0x07);
