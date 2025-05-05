@@ -22,12 +22,7 @@ This is work in progress. Currently available is:
 
 ## Range
 
-Setting `RegPaLevel` to `0x5f`, which gives +13 dBm with `PA1`, indoor range is 
-very good and in an actual "field" test, packet reception was still reliable 
-with an RSSI of about -90 dBm at about 2.2 km distance - with simple wire 
-antennas. What would be the range with +20 dBm and decent antennas?  
-
-![FieldTest3](https://github.com/user-attachments/assets/f2289f8e-1f81-4b85-9146-07c2ce1bb563)
+There is a range test with an RFM95 in FSK mode at [librfm95](https://github.com/gitdode/librfm95/tree/main?tab=readme-ov-file#fsk).
 
 ## Susceptibility to Temperature Changes
 
@@ -46,3 +41,5 @@ Frequency Deviation = 10.4 kHz (transmitter)
 
 Receiver Bandwidth = 20.8 kHz  
 `RegRxBw` = `0x54`  
+
+The issue can probably also be solved with automatic frequency correction (AFC).  
