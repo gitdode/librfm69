@@ -4,9 +4,6 @@
 
 Static avr-libc library providing basic support for RFM69 radio modules.  
 
-I'm impressed how well these radio modules work; the range achieved with 
-simple wire antennas as well as the reliable packet transmission.  
-
 This is work in progress. Currently available is:
 
 - Transmit a packet
