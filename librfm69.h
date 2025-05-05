@@ -26,8 +26,8 @@
 #define RFM_PA_LEVEL    0x11
 #define RFM_LNA         0x18
 #define RFM_RX_BW       0x19
+#define RFM_AFC_BW      0x1a
 #define RFM_AFC_FEI     0x1e
-#define RFM_AFC_BW      0x20
 #define RFM_RSSI_CONFIG 0x23
 #define RFM_RSSI_VALUE  0x24
 #define RFM_DIO_MAP1    0x25
