@@ -2,12 +2,19 @@
 #
 # Simplified version from: https://github.com/hexagon5un/AVR-Programming
 
+# https://gcc.gnu.org/onlinedocs/gcc/AVR-Options.html
+# avr-gcc -mmcu=atmega328p -print-multi-directory
+MCU = avr5
+# avr-gcc -mmcu=avr64ea28 -print-multi-directory
+# MCU = avrxmega2
+
 MAIN = librfm69.c
 SRC =
 
 CC = avr-gcc
 AR = avr-ar
 
+CFLAGS = -mmcu=$(MCU)
 CFLAGS += -O2 -I.
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 CFLAGS += -Wall -Wstrict-prototypes
